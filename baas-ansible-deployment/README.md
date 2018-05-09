@@ -1,7 +1,7 @@
 
-We all know of the struggle in deploying k8s cluster, by installing all the dependent packages/software’s, setting up needed environment etc, manually on ‘n’ nodes.
-Now it’s made easy  with ansible playbooks, ‘x’ node cluster is deployed in very short time without any manual intervention, user just needs to provide ip & user credentials for all the nodes.
-Let me know for any query.
+Tool?
+- Tool deploys  k8s cluster by just using ip, & user credentials for nodes.
+- Also tool will add new node easily to the existing cluster
  
 Why ansible playbooks & value adds?
 -	Ansible is open source, simple, powerful & agentless.
