@@ -12,7 +12,7 @@
 -	Helps in scaled environment.
 -	Manual effort saved.
 
-## Ansible playbooks details:
+## Ansible playbooks YAML:
 -	k8s_cluster.yml   ->  Deploys  ‘x’ node cluster without any manual intervention.
 -	k8s_node_add.yml -> Adds new node easily to the existing cluster.
 -	k8s_node_delete.yml  - > WIP
