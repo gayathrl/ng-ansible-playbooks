@@ -1,0 +1,52 @@
+---
+
+- hosts: localhost
+  tasks:
+    - name: Set authorized key took from file
+      authorized_key:
+        user: root
+        state: present
+        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+      register: pub_key
+    - name: set authorization key
+      set_fact:
+        auth_key: "{{ pub_key['keyfile'] }}"
+
+    - name: Update authorized key on all clients
+      shell: sshpass -p "{{ hostvars[item].passwd }}" ssh-copy-id -i /root/.ssh/id_rsa.pub -o StrictHostKeyChecking=no "{{ hostvars[item].user }}"@{{ item }}
+      with_items: "{{ groups.all }}"
+
+- hosts: all
+  tasks:
+
+- hosts: localhost
+  tasks:
+    - include: "roles/common/tasks/add_ip_address_to_all_hosts.yml"
+
+- name: Apply common configurations
+  hosts: all
+ 
+  roles:
+    - common
+
+- name: Configure k8s master
+  hosts: k8smaster
+
+  roles:
+    - k8smaster
+
+
+- name: Configure k8s workers
+  hosts: k8sworkers
+  tags: worker
+  
+  roles:
+    - k8sworker
+
+- name: Get k8s cluster states
+  hosts: k8smaster
+  tasks:
+    - name: Get k8s nodes info
+      shell: kubectl get nodes
+      register: result
+    - debug: msg= "{{ result.stdout_lines }}"

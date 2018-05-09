@@ -1,0 +1,17 @@
+---
+
+- name: Start docker & kubelet
+  shell: systemctl start docker && systemctl start kubelet
+
+- name: Enable docker & kubelet
+  shell: systemctl enable docker && systemctl enable kubelet
+
+- name: Wait until k8s master gets ready
+  shell: sleep 80
+
+- name: Kubeadm join on all worker nodes
+  shell: "{{ hostvars[item].kubeadmjoin }}"
+  with_items: "{{ groups.k8smaster }}"
+
+- name: Wait until k8s cluster is formed
+  shell: sleep 30

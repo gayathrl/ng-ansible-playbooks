@@ -1,0 +1,5 @@
+---
+
+- name: Execute k8s master configs
+  include: "master.yml"
+#  include: "get_master_token.yml"

@@ -1,0 +1,55 @@
+---
+
+- debug:
+    msg: "{{ hostvars[inventory_hostname].ansible_all_ipv4_addresses }}"
+
+- name: Update the OS
+  shell: apt update -y --nogpgcheck
+
+- name: exec bash
+  shell: exec bash
+
+- name: setenforce 0
+  shell: setenforce 0
+  ignore_errors: yes
+
+- name: Disable SELINUX
+  shell: sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
+
+- name: Disable firewalld
+  shell: systemctl disable firewalld
+
+- name: Stop firewalld
+  shell: systemctl stop firewalld
+
+- name: Copy k8s.conf @ /etc/sysctl.conf
+  copy: src=k8s.conf dest=/etc/sysctl.conf
+
+- name: Turn off swap
+  shell: swapoff -a && sed -i '/swap[ \t]\+swap/d' /etc/fstab
+
+- name: Reboot the machine
+  shell: nohup bash -c "sleep 2s && shutdown -r now" &
+
+- name: Wait for machine to come back
+  wait_for_connection:
+    timeout: 240
+    delay: 20
+
+- name: Copy kubernetes.repo @ /etc/yum.repos.d
+  copy: src=kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
+
+- name: Install docker, kubelet, kubeadm, kubectl & kubernetes-cni latest version
+  apt: name="{{ item }}" state=present
+  with_items:
+    - docker
+    - kubelet
+    - kubeadm 
+    - kubectl
+    - kubernetes-cni
+
+- name: Start docker & kubelet
+  shell: systemctl start docker && systemctl start kubelet
+
+- name: Enable docker & kubelet
+  shell: systemctl enable docker && systemctl enable kubelet

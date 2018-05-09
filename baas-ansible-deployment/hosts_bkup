@@ -1,0 +1,21 @@
+[k8smaster]
+10.61.131.97
+
+[k8smaster:vars]
+user = root
+passwd = netapp1234
+
+[k8sworkers]
+10.61.131.95
+10.61.131.209
+
+[k8sworkers:vars]
+user = root
+passwd = netapp1234
+
+[newnode]
+10.61.131.126
+
+[newnode:vars]
+user = root
+passwd = netapp123

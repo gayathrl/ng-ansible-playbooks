@@ -1,0 +1,11 @@
+---
+
+- name: Get kubeadm join command
+  shell: "kubeadm token create --print-join-command"
+  register: result
+
+- name: set kubeadm join
+  set_fact:
+    kubeadmjoincmd : "{{ result.stdout }}"
+
+- debug: msg= "{{ kubeadmjoincmd }}"

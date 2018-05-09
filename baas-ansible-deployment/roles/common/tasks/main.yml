@@ -1,0 +1,6 @@
+---
+
+- name: Add ip addresses to all /etc/hosts
+  include: "add_ip_address_to_all_hosts.yml"
+- name: OS specific common configs for k8s cluster
+  include: "{{ ansible_os_family }}.yml"
