@@ -54,3 +54,4 @@
       shell: kubectl get nodes
       register: result
     - debug: msg= "{{ result.stdout_lines }}"
+
