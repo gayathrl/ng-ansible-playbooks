@@ -25,7 +25,7 @@
 3.	cd ~
 4.	git clone https://github.com/gayathrl/ng-ansible-playbooks.git
 
-# Deploy k8s cluster ###########
+## Deploy k8s cluster ###########
 1.	Edit hosts file @ ~/ng-ansible-playbooks/baas-ansible-deployment/hosts  and provide your node details as shown below:
 ```
 [root@centos72-1-gayathrl ~]# cat /root/ng-ansible-playbooks/baas-ansible-deployment/hosts  
@@ -52,7 +52,7 @@ passwd = xxxxxx
 3.	K8s cluster should be ready in just < 15min.
 
 
-# Add new node to the k8s cluster ####################
+## Add new node to the k8s cluster ####################
 1.	Edit hosts file @/root/ng-ansible-playbooks/baas-ansible-deployment/hosts  and provide your node details as shown below:
 ```
 [root@centos72-1-gayathrl ~]# cat /root/ng-ansible-playbooks/baas-ansible-deployment/hosts
