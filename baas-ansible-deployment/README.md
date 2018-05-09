@@ -84,4 +84,3 @@ passwd = xxxxxx
 3.	New node gets added to k8s cluster.
 
 
-
