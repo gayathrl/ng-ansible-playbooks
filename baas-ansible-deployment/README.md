@@ -2,6 +2,7 @@
 ## Tool?
 - Tool deploys  k8s cluster by just using ip, & user credentials for nodes.
 - Also tool will add new node easily to the existing cluster
+- Handles multiple os platforms
  
 ## Why ansible playbooks & value adds?
 -	Ansible is open source, simple, powerful & agentless.
