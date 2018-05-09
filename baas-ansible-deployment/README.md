@@ -45,8 +45,7 @@ passwd = xxxxxx
 
 2.	Execute ansible playbook:
 
-[root@centos72-1-gayathrl baas-ansible-deployment]# pwd
-/root/ng-ansible-playbooks/baas-ansible-deployment
+[root@centos72-1-gayathrl baas-ansible-deployment]# cd /root/ng-ansible-playbooks/baas-ansible-deployment
 [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml
 
 3.	K8s cluster should be ready in just < 15min.
@@ -79,8 +78,7 @@ passwd = xxxxxx
 
 2.	Execute ansible playbook:
 
-[root@centos72-1-gayathrl baas-ansible-deployment]# pwd
-/root/ng-ansible-playbooks/baas-ansible-deployment
+[root@centos72-1-gayathrl baas-ansible-deployment]# cd /root/ng-ansible-playbooks/baas-ansible-deployment
 [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml
 
 3.	New node gets added to k8s cluster.
