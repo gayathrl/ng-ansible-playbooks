@@ -1,3 +1,5 @@
+Hi All,
+
 We all know of the struggle in deploying k8s cluster, by installing all the dependent packages/software’s, setting up needed environment etc, manually on ‘n’ nodes.
 Now it’s made easy  with ansible playbooks, ‘x’ node cluster is deployed in very short time without any manual intervention, user just needs to provide ip & user credentials for all the nodes.
 Let me know for any query.
@@ -12,17 +14,17 @@ Why ansible playbooks & value adds?
 -	Manual effort saved.
 
 Ansible playbooks details:
-o	k8s_cluster.yml   ->  Deploys  ‘x’ node cluster without any manual intervention.
-o	k8s_node_add.yml -> Adds new node easily to the existing cluster.
-o	k8s_node_delete.yml  - > WIP
-o	Baas_work_flow.yml –>  future
+-	k8s_cluster.yml   ->  Deploys  ‘x’ node cluster without any manual intervention.
+-	k8s_node_add.yml -> Adds new node easily to the existing cluster.
+-	k8s_node_delete.yml  - > WIP
+-	Baas_work_flow.yml –>  future
 
 How to use?
 -	One time setup on your ansible controller, where ansible play-books are executed [Any linux host/VM].
-o	yum install git -y
-o	yum install ansible -y
-o	cd ~
-o	git clone https://github.com/gayathrl/ng-ansible-playbooks.git
+1.	yum install git -y
+2.	yum install ansible -y
+3.	cd ~
+4.	git clone https://github.com/gayathrl/ng-ansible-playbooks.git
 
 >>>>>>>>>>>>>>>>  Deploy k8s cluster <<<<<<<<<<<<<<<<<
 1.	Edit hosts file @ ~/ng-ansible-playbooks/baas-ansible-deployment/hosts  and provide your node details as shown below:
@@ -83,4 +85,9 @@ passwd = xxxxxx
 [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml
 
 3.	New node gets added to k8s cluster.
+
+
+
+Thanks,
+Gayathri
 
