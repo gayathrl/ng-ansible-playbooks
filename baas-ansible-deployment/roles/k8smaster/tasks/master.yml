@@ -4,8 +4,11 @@
     msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 
 - name: Kubeadm initialize on master
-  shell: kubeadm init --apiserver-advertise-address {{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }} --pod-network-cidr=192.168.0.0/16
-  register: output 
+  shell: kubeadm reset
+
+- name: Kubeadm initialize on master
+  shell: kubeadm init --token-ttl 0
+  register: output
 
 - name: Set kubeadm init output
   set_fact:
@@ -15,16 +18,27 @@
     msg: "{{ kubeadmjoin }}"
 
 - name: Kubeadm initialize more configs
-  shell: mkdir -p $HOME/.kube && cp -u /etc/kubernetes/admin.conf $HOME/.kube/config && chown -R $(id -u):$(id -g) $HOME/.kube
+  shell: mkdir -p $HOME/.kube && sudo cp -R /etc/kubernetes/admin.conf $HOME/.kube/config && sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+- name: get kubever
+  shell: kubectl version | base64 | tr -d '\n'
+  register: result
+
+- name: set kubever
+  set_fact:
+    kubever: "{{ result.stdout }}"
+
+- name: kube-weave network
+  shell: kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version={{ kubever }}"
 
 - name: Get nodes
   shell: kubectl get nodes
 
 - name: Get pods all namespaces
-  shell: kubectl get pods --all-namespaces
+  shell: kubectl get pods --all-namespaces -o wide
 
-- name: kube-flannel network
-  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
+#- name: kube-flannel network
+#  shell: kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/v0.9.1/Documentation/kube-flannel.yml
 
 - name: Start docker & kubelet
   shell: systemctl start docker && systemctl start kubelet
