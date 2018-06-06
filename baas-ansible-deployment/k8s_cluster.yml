@@ -56,3 +56,9 @@
       register: result
     - debug: msg= "{{ result.stdout_lines }}"
 
+- name: k8s add-on's
+  hosts: k8smaster
+  tags: addons
+
+  roles:
+    - k8saddons
