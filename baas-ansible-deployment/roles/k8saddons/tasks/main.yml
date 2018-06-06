@@ -1,0 +1,5 @@
+---
+
+- name: Execute k8s add on's
+  include: "addons.yml"
+  
