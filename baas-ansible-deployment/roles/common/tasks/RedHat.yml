@@ -40,6 +40,9 @@
 - name: Copy kubernetes.repo @ /etc/yum.repos.d
   copy: src=kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
 
+- name: Remove docker-ce
+  shell: yum remove docker-ce -y
+
 - name: Install docker, kubelet, kubeadm, kubectl & kubernetes-cni latest version
   yum: name="{{ item }}" state=present
   with_items:
