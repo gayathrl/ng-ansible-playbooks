@@ -1,0 +1,14 @@
+[k8smaster]
+10.61.131.97 ansible_user=cbs
+
+[k8smaster:vars]
+user = cbs 
+passwd = xxxx
+
+[k8sworkers]
+10.61.131.95 ansible_user=cbs
+10.61.131.209 ansible_user=cbs
+
+[k8sworkers:vars]
+user = cbs
+passwd = xxx
