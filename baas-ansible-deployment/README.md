@@ -85,6 +85,16 @@ passwd = xxxxxx
 [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml
 ```
 
+NOTE:
+ - For non root users:
+     - refer sample hosts file named "hosts_non_root_user_sample" in the code base
+     - Invoke you ansible playbook as shown below:
+     ```
+     [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml -b --ask-sudo-pass 
+     SUDO PASSWORD: <enter your sudo password [asks only once]>
+     ```
+ 
+
 3.	New node gets added to k8s cluster.
 
 
