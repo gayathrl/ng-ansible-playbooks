@@ -4,7 +4,11 @@
     msg: "{{ hostvars[inventory_hostname].ansible_all_ipv4_addresses }}"
 
 - name: Update the OS
-  shell: apt update -y --nogpgcheck
+  shell: apt-get update -y
+  ignore_errors: yes
+
+- name: Update apt-transport-https
+  shell: apt-get install apt-transport-https -y
 
 - name: exec bash
   shell: exec bash
@@ -13,20 +17,22 @@
   shell: setenforce 0
   ignore_errors: yes
 
-- name: Disable SELINUX
-  shell: sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
-
 - name: Disable firewalld
   shell: systemctl disable firewalld
+  ignore_errors: yes
 
 - name: Stop firewalld
   shell: systemctl stop firewalld
+  ignore_errors: yes
 
 - name: Copy k8s.conf @ /etc/sysctl.conf
   copy: src=k8s.conf dest=/etc/sysctl.conf
 
 - name: Turn off swap
-  shell: swapoff -a && sed -i '/swap[ \t]\+swap/d' /etc/fstab
+  shell: swapoff -a
+
+- name: Swap disable
+  shell: sed -i '/swap/s/^/#/g' /etc/fstab
 
 - name: Reboot the machine
   shell: nohup bash -c "sleep 2s && shutdown -r now" &
@@ -36,13 +42,23 @@
     timeout: 240
     delay: 20
 
-- name: Copy kubernetes.repo @ /etc/yum.repos.d
-  copy: src=kubernetes.repo dest=/etc/yum.repos.d/kubernetes.repo
+- name: Kubernetes for ubuntu
+  shell: curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+- name: Kubernetes for ubuntu
+  shell: echo "deb http://apt.kubernetes.io/ kubernetes-xenial main" > /etc/apt/sources.list.d/kubernetes.list
+
+- name: Update the OS again
+  shell: apt-get update -y
+  ignore_errors: yes
+
+- name: Remove docker-ce
+  shell: apt-get purge --auto-remove docker-ce -y
 
 - name: Install docker, kubelet, kubeadm, kubectl & kubernetes-cni latest version
   apt: name="{{ item }}" state=present
   with_items:
-    - docker
+    - docker.io
     - kubelet
     - kubeadm 
     - kubectl
@@ -53,3 +69,4 @@
 
 - name: Enable docker & kubelet
   shell: systemctl enable docker && systemctl enable kubelet
+  
