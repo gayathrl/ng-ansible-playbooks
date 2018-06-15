@@ -90,7 +90,7 @@ NOTE:
      - refer sample hosts file named "hosts_non_root_user_sample" in the code base
      - Invoke you ansible playbook as shown below:
      ```
-     [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml -b --ask-sudo-pass 
+     [root@centos72-1-gayathrl baas-ansible-deployment]# ansible-playbook k8s_cluster.yml -b -K
      SUDO PASSWORD: <enter your sudo password [asks only once]>
      ```
  
