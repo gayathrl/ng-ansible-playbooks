@@ -22,3 +22,6 @@
 - name: Print dashboard url for user
   debug:
     msg: "http://{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}:{{ nodeport }}"
+    
+- name: Ensure cbs user has access to kubernetes cluster
+  shell: sudo cp /etc/kubernetes/admin.conf /home/"{{ ansible_ssh_user }}"/.kube/config
