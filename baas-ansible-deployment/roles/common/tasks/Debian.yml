@@ -34,8 +34,11 @@
 - name: Swap disable
   shell: sed -i '/swap/s/^/#/g' /etc/fstab
 
-- name: Reboot the machine
-  shell: nohup bash -c "sleep 2s && shutdown -r now" &
+#- name: Reboot the machine
+#  shell: nohup bash -c "sleep 2s && shutdown -r now" &
+
+- name: systemctl daemon-reload
+  shell: systemctl daemon-reload
 
 - name: Wait for machine to come back
   wait_for_connection:
