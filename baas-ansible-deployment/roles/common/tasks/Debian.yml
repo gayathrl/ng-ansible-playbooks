@@ -9,6 +9,7 @@
 
 - name: Update apt-transport-https
   shell: apt-get install apt-transport-https -y
+  ignore_errors: yes
 
 - name: exec bash
   shell: exec bash
@@ -57,6 +58,42 @@
 
 - name: Remove docker-ce
   shell: apt-get purge --auto-remove docker-ce -y
+  ignore_errors: yes
+
+- name: Remove docker
+  shell: apt-get purge --auto-remove docker -y
+  ignore_errors: yes
+
+- name: stop kubelet
+  shell: systemctl stop kubelet
+  ignore_errors: yes
+
+- name: docker rm
+  shell: docker rm -f -v $(docker ps -q)
+  ignore_errors: yes
+
+- name: find kubelet
+  shell: find /var/lib/kubelet | xargs -n 1 findmnt -n -t tmpfs -o TARGET -T | uniq | xargs -r umount -v
+
+- name: kubeadm reset 
+  shell: kubeadm reset --skip-preflight-checks --force
+  ignore_errors: yes
+
+- name: kube purge
+  shell: apt-get purge --auto-remove "{{ item }}" -y
+  with_items:
+    - kubeadm
+    - kubectl
+    - kubelet
+    - kubernetes-cni
+      #  shell:  dpkg --remove --force-all docker-ce docker kubeadm kubectl kubelet kubernetes-cni
+  ignore_errors: yes
+
+- name: autoremove
+  shell: echo "y" | sudo apt-get autoremove
+
+- name: rm kubernetes
+  shell: rm -rf ~/.kube /etc/kubernetes /etc/systemd/system/kubelet.service.d /var/lib/kubelet /var/lib/etcd
 
 - name: Install docker, kubelet, kubeadm, kubectl & kubernetes-cni latest version
   apt: name="{{ item }}" state=present

@@ -3,11 +3,11 @@
 - debug:
     msg: "{{ hostvars[inventory_hostname]['ansible_default_ipv4']['address'] }}"
 
-- name: Kubeadm initialize on master
-  shell: kubeadm reset
+#- name: Kubeadm initialize on master
+#  shell: kubeadm reset force
 
 - name: Kubeadm initialize on master
-  shell: kubeadm init --token-ttl 0
+  shell: kubeadm init --token-ttl 0 --ignore-preflight-errors=all
   register: output
 
 - name: Set kubeadm init output

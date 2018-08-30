@@ -3,21 +3,22 @@
 - hosts: localhost
   tasks:
     - name: ssh-keygen
-      shell: ssh-keygen -b 2048 -t rsa -f /root/.ssh/id_rsa -q -N ""
+      shell: ssh-keygen -b 2048 -t rsa -f /home/cbs/.ssh/id_rsa -q -N ""
       args:
         creates: /root/.ssh/id_rsa
+
     - name: Set authorized key took from file
       authorized_key:
         user: root
         state: present
-        key: "{{ lookup('file', '/root/.ssh/id_rsa.pub') }}"
+        key: "{{ lookup('file', '/home/cbs/.ssh/id_rsa.pub') }}"
       register: pub_key
     - name: set authorization key
       set_fact:
         auth_key: "{{ pub_key['keyfile'] }}"
 
     - name: Update authorized key on all clients
-      shell: sshpass -p "{{ hostvars[item].passwd }}" ssh-copy-id -i /root/.ssh/id_rsa.pub -o StrictHostKeyChecking=no "{{ hostvars[item].user }}"@{{ item }}
+      shell: sshpass -p "{{ hostvars[item].passwd }}" ssh-copy-id -i /home/cbs/.ssh/id_rsa.pub -o StrictHostKeyChecking=no "{{ hostvars[item].user }}"@{{ item }}
       with_items: "{{ groups.newnode }}"
 
 - hosts: all
