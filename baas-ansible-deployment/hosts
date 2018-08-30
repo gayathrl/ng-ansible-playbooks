@@ -19,3 +19,5 @@ passwd = xxx
 [newnode:vars]
 user = root
 passwd = xxx
+
+Rakesh Kushwah
